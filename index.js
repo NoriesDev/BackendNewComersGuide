@@ -4,7 +4,8 @@ import chalkMassage from "./lib/chalk.js";
 import "./db/mongooseClient.js";
 import cors from 'cors';
 import articleRouter from "./routes/articleRoute.js";
-import errHandler from './middleware/errHandler.js'
+import errHandler from './middleware/errHandler.js';
+import lawRouter from './routes/lawRouter.js';
 
 const server = express();
 
@@ -19,6 +20,7 @@ server.get('/', async (req, res) => {
 });
 
 server.use('/article', articleRouter);
+server.use('/law', lawRouter);
 
 server.use(errHandler)
 

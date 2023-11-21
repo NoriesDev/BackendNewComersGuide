@@ -4,7 +4,7 @@ import { allArticle, createArticle, oneArticle } from '../controllers/articleCon
 const articleRouter = express.Router();
 
 articleRouter.route('/').get(allArticle);
-articleRouter.route('/one').get(oneArticle);
+articleRouter.route('/:id').get(oneArticle);
 articleRouter.route('/add').post(createArticle)
 
 export default articleRouter;
