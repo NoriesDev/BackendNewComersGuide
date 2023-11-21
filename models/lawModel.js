@@ -15,13 +15,13 @@ const lawSchema = new Schema({
     article: {
       type: String,
     },
-    usefulLinks: [{
-        type: String,
-        match: [
-          /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
-          'must be a valid URL',
-        ],
-      }],
+    imgSrc: [{
+      type: String,
+      match: [
+        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+        'must be a valid URL',
+      ],
+    }],
   });
   
   export default model('Law', lawSchema);
