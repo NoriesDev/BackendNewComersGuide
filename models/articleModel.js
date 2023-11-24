@@ -17,9 +17,19 @@ const articleSchema = new Schema({
         'must be a valid URL',
       ],
     }],
-    article: {
-      type: String,
-    },
+    article: [{
+      headline: {
+        type: String,
+        maxlength: 255,
+        match: [
+        /^[a-zA-Z\s.-]+$/,
+        'must contain only letters and max 255 characters long',
+      ],
+      },
+      paragraph: {
+         type: String,
+      }
+    }],
     usefulLinks: [{
         type: String,
         match: [
