@@ -1,5 +1,4 @@
 const baseURL = 'https://api-free.deepl.com/v2/translate';
-const apiKey = 'e0fcdff4-5537-2591-46f0-7339c88aa996:fx';
 
 const translateText = async (req, res, next) => {
     // console.log('hi');
@@ -13,7 +12,7 @@ const translateText = async (req, res, next) => {
                             method: "POST",
                             headers: {
                                     'Content-Type': 'application/json',
-                                    'Authorization': `DeepL-Auth-Key ${apiKey}`, 
+                                    'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`, 
                                 }, 
                         });
             const data = await response.json()
