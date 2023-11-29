@@ -6,7 +6,10 @@ import cors from 'cors';
 import articleRouter from "./routes/articleRoute.js";
 import errHandler from './middleware/errHandler.js';
 import lawRouter from './routes/lawRouter.js';
+import authRouter from "./routes/authRoute.js";
+import forumRouter from "./routes/forumRoute.js";
 import translateRouter from './routes/translateRouter.js';
+
 
 const server = express();
 
@@ -24,6 +27,8 @@ server.use('/translate', translateRouter)
 
 server.use('/article', articleRouter);
 server.use('/law', lawRouter);
+server.use('/auth', authRouter)
+server.use('/forum', forumRouter)
 
 server.use(errHandler)
 
