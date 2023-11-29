@@ -3,6 +3,7 @@ import { json } from "express";
 import chalkMassage from "./lib/chalk.js";
 import "./db/mongooseClient.js";
 import cors from 'cors';
+import searchRouter from "./routes/searchRoute.js";
 import articleRouter from "./routes/articleRoute.js";
 import errHandler from './middleware/errHandler.js';
 import lawRouter from './routes/lawRouter.js';
@@ -21,7 +22,7 @@ server.get('/', (req, res) => {
 });
 
 server.use('/translate', translateRouter)
-
+server.use('/search', searchRouter)
 server.use('/article', articleRouter);
 server.use('/law', lawRouter);
 
