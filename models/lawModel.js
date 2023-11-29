@@ -12,9 +12,6 @@ const lawSchema = new Schema({
     law: {
         type: String,
       },
-    article: {
-      type: String,
-    },
     imgSrc: [{
       type: String,
       match: [
