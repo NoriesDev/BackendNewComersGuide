@@ -10,7 +10,7 @@ const allArticle = async (req, res, next) => {
     }
 };
 
-const oneArticle = async (rew, res, next) => {
+const oneArticle = async (req, res, next) => {
     try {
         const { id } = req.params;
         if (!id.match(/^[a-f\d]{24}$/i)) throw new ErrorStatus('Can not find Id', 400);
