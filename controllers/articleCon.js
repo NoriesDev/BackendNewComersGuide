@@ -1,9 +1,10 @@
 import ErrorStatus from '../utils/errorStatus.js';
-import ArticleModel from '../models/articleModel.js';
+import ArticleCollection from '../models/articleModel.js';
+import CategoryCollection from '../models/categorySchema.js'
 
 const allArticle = async (req, res, next) => {
     try {
-        const dbArticle = await ArticleModel.find();
+        const dbArticle = await CategoryCollection.find();
         return res.json(dbArticle);
     } catch (error){
         next (error);
@@ -14,7 +15,7 @@ const oneArticle = async (req, res, next) => {
     try {
         const { id } = req.params;
         if (!id.match(/^[a-f\d]{24}$/i)) throw new ErrorStatus('Can not find Id', 400);
-        const findArticle = await ArticleModel.findById(id);
+        const findArticle = await CategoryCollection.findById(id);
         return res.json(findArticle)
     } catch (error) {
         next(error);
@@ -23,24 +24,36 @@ const oneArticle = async (req, res, next) => {
 
 const createArticle = async (req, res, next) => {
     try {
-        const { title, imgSrc, article, usefulLinks } = req.body;
-        if (!title || !imgSrc || !article || !usefulLinks)
-        throw new ErrorStatus('Please make sure you have all content you need', 400);
-
-        const newArticle = await ArticleModel.create({
-            title,
-            imgSrc,
-            article,
-            usefulLinks
-        });
-        return res.json(newArticle);
+        req.body.forEach( async ( { headline, paragraph } ) => {
+            const newArticle = await ArticleCollection.create({
+                headline,
+                paragraph
+            });
+        })
+        return res.json('Articles created');
     } catch (error) {
         next(error)
     }
 }
 
+const createCategory = async (req, res, next) => {
+    try {
+        req.body.forEach( async ( { title, imgSrc, article, usefulLinks } ) => {
+            const category = await CategoryCollection.create({
+                title, imgSrc, article, usefulLinks
+            });
+        })
+        return res.json('category created');
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
 export {
     allArticle,
     oneArticle,
-    createArticle
+    createArticle,
+    createCategory
 }
