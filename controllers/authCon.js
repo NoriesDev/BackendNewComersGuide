@@ -7,14 +7,13 @@ import jwt from 'jsonwebtoken';
 
 const createUser = async (req, res, next) => {
     try{
-    const { userName, password, profileImg, email} = req.body;
-    if (!userName || !password || !profileImg || !email) throw new ErrorStatus('Please provide all required fields', 400);
+    const { userName, password, email} = req.body;
+    if (!userName || !password || !email) throw new ErrorStatus('Please provide all required fields', 400);
     const hashedPwd = await bcrypt.hash(password, 10);
 
     const { _id } = await userModel.create({
         userName,
         password: hashedPwd,
-        profileImg,
         email,
     });
     const token = jwt.sign({ _id }, process.env.JWT_SECRET, {
@@ -49,7 +48,7 @@ const loginUser = async (req, res, next) => {
     const token = jwt.sign({ _id: findUser._id }, process.env.JWT_SECRET, {
         expiresIn: '1h',
     });
-    res.set('authorization', token);
+    return res.status(200).json({ token });
     return res.end();
     } catch (error) {
     next(error);
