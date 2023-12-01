@@ -82,6 +82,7 @@ const translateDocument = async (req, res, next) => {
 
     console.log('document id and key', document_id, document_key)
 
+
     const statusPing = setInterval(async () => {
       const checkDocStatus = await fetch(`${document}/${document_id}`, {
         body: JSON.stringify({"document_key": document_key}),
@@ -107,14 +108,16 @@ const translateDocument = async (req, res, next) => {
         const contentType = downloadDoc.headers.get("content-type")
   
         if (contentType === 'text/plain') {
+          clearInterval(statusPing)
           const translatedDoc = await downloadDoc.text();
+          console.log("AFTER RETURN - DEEPL RESPONSE BODY: ", downloadDoc.body)
           console.log(translatedDoc)
-          res.status(201).json({translation: translatedDoc})
-          return clearInterval(statusPing)
+          return res.status(201).json({translation: translatedDoc})
+           
         }
 
-        console.log(downloadDoc.urlList)
-        console.log(downloadDoc.body)
+        console.log("AFTER RETURN - URL LIST: ", downloadDoc.urlList)
+        console.log("AFTER RETURN - DEEPL RESPONSE BODY: ", downloadDoc.body)
         res.status(201).json({message: "translated document successfully"})
           return clearInterval(statusPing)
   
