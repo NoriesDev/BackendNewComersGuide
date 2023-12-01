@@ -20,13 +20,6 @@ const userSchema = new Schema({
         'must contain at least one uppercase letter, one lowercase letter, one number and be between 8 and 20 characters long',
       ],
     },
-    profileImg: {
-        type: String,
-        match: [
-            /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
-            'must be a valid URL',
-          ],
-    },
     email: {
         type: String,
         required: true,
