@@ -55,5 +55,5 @@ export {
     allArticle,
     oneArticle,
     createArticle,
-    createCategory
+    createCategory,
 }
