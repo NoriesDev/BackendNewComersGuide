@@ -6,7 +6,7 @@ const translateRouter = express.Router();
 
 translateRouter.post('/', translateText);
 
-translateRouter.get('/', allLanguages);
+translateRouter.get('/languages', allLanguages);
 
 translateRouter.post('/document', upload.single('translateDocument'), translateDocument);
 
