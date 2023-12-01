@@ -16,7 +16,7 @@ const server = express();
 
 server.use(json());
 
-server.use(cors({ origin: "*" }));
+server.use(cors({exposedHeaders: "authorization"}));
 
 const PORT = process.env.PORT || 3000;
 

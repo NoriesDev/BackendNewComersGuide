@@ -4,7 +4,7 @@ import CategoryCollection from '../models/categorySchema.js'
 
 const allArticle = async (req, res, next) => {
     try {
-        const dbArticle = await CategoryCollection.find();
+        const dbArticle = await CategoryCollection.find().populate('article');
         return res.json(dbArticle);
     } catch (error){
         next (error);
@@ -15,7 +15,7 @@ const oneArticle = async (req, res, next) => {
     try {
         const { id } = req.params;
         if (!id.match(/^[a-f\d]{24}$/i)) throw new ErrorStatus('Can not find Id', 400);
-        const findArticle = await CategoryCollection.findById(id);
+        const findArticle = await CategoryCollection.findById(id).populate('article');
         return res.json(findArticle)
     } catch (error) {
         next(error);

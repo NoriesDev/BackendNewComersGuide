@@ -48,8 +48,8 @@ const loginUser = async (req, res, next) => {
     const token = jwt.sign({ _id: findUser._id }, process.env.JWT_SECRET, {
         expiresIn: '1h',
     });
-    return res.status(200).json({ token });
-    return res.end();
+    res.set("authorization", token)
+    return res.sendStatus(200);
     } catch (error) {
     next(error);
     }
