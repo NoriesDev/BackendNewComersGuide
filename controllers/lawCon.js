@@ -1,5 +1,6 @@
 import ErrorStatus from "../utils/errorStatus.js";
 import LawModel from '../models/lawModel.js';
+import { OldAPIClient } from '../utils/oldpApi.js'
 
 const allLaws = async (req, res, next) => {
     try {
@@ -36,8 +37,40 @@ const createLaw = async (req, res, next) => {
     }
 };
 
+const getLawById = (req, res) => {
+    const lawId = req.params.id;
+    const apiInstance = new OldAPIClient.LawsApi();
+    const callback = (error, data) => {
+    if (error) {
+        res.status(error.status || 500).json({error: error.response.text});
+    } else {
+        res.json(data);
+    }
+};
+apiInstance.lawsRead(lawId, callback);
+};
+
+
+const getBookById = (req, res) => {
+    const bookId = req.params.id;
+    const apiInstance = new OldAPIClient.LawsApi();
+    const options = {
+        bookId
+    };
+    const callback = (error, data) => {
+        if (error) {
+            res.status(error.status || 500).json({error: error.response.text});
+        } else {
+            res.json(data);
+        }
+    };
+    apiInstance.lawsList(options, callback)
+}
+
 export {
     allLaws,
     oneLaw,
-    createLaw
+    createLaw,
+    getBookById,
+    getLawById
 }

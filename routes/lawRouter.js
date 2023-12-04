@@ -1,5 +1,5 @@
 import express from 'express';
-import {allLaws, oneLaw, createLaw} from '../controllers/lawCon.js';
+import {allLaws, oneLaw, createLaw } from '../controllers/lawCon.js';
 
 const lawRouter = express.Router();
 
