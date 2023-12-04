@@ -10,7 +10,7 @@ import lawRouter from './routes/lawRouter.js';
 import authRouter from "./routes/authRoute.js";
 import forumRouter from "./routes/forumRoute.js";
 import translateRouter from './routes/translateRouter.js';
-
+import oldRoute from "./routes/oldRoute.js";
 
 const server = express();
 
@@ -30,6 +30,7 @@ server.use('/article', articleRouter);
 server.use('/law', lawRouter);
 server.use('/auth', authRouter)
 server.use('/forum', forumRouter)
+server.use('/old', oldRoute);
 
 server.use(errHandler)
 

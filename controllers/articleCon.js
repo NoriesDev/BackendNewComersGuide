@@ -22,7 +22,7 @@ const oneArticle = async (req, res, next) => {
     }
 };
 
-const createArticle = async (req, res, next) => {
+const reateArticle = async (req, res, next) => {
     try {
         req.body.forEach( async ( { headline, paragraph } ) => {
             const newArticle = await ArticleCollection.create({
@@ -35,6 +35,23 @@ const createArticle = async (req, res, next) => {
         next(error)
     }
 }
+const createArticle = async (req, res, next) => {
+    try {
+        const { headline, paragraph } = req.body;
+        if (!headline || !paragraph) {
+            return res.status(400).json({ error: 'Headline and paragraph are required.' });
+        }
+
+        const newArticle = await ArticleCollection.create({
+            headline,
+            paragraph
+        });
+
+        return res.json('Article created');
+    } catch (error) {
+        next(error);
+    }
+};
 
 const createCategory = async (req, res, next) => {
     try {
