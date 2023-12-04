@@ -18,14 +18,14 @@ const translateText = async (req, res, next) => {
                                     'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`, 
                                 }, 
                         });
-            const data = await response.json()
-            console.log(data)
-                return res.status(200).json(data)
-              } catch (error) {
-                    console.error('Error translating text:', error);
-                    throw error;
-              }
-            };
+    const data = await response.json()
+    console.log(data)
+    
+    return res.json(data)
+  } catch (error) {
+    next(error)
+  }
+};
 
 const allLanguages = (req, res) => res.json(req.languages);
 
@@ -87,6 +87,8 @@ const translateDocument = async (req, res, next) => {
           console.log(`DeepL Translation error: ${data.message}`)
           throw new ErrorStatus(data.message, 400)
         }
+
+        console.log(data)
         
         if (data.status === 'done') {
           const downloadDoc = await fetch(`${document}/${document_id}/result`, {
@@ -104,24 +106,27 @@ const translateDocument = async (req, res, next) => {
     
           if (contentType === 'text/plain') {
             const translatedDoc = await downloadDoc.text();
-            console.log("AFTER RETURN - DEEPL RESPONSE BODY: ", downloadDoc.body)
-            console.log(translatedDoc)
+            console.log('fetched data processed as text', translatedDoc)
             await unlink(req.file.path) 
             res.status(201).json({translation: translatedDoc})
             return clearInterval(statusPing)
           }
 
-          console.log("AFTER RETURN - URL LIST: ", downloadDoc.urlList)
-          console.log("AFTER RETURN - DEEPL RESPONSE BODY: ", downloadDoc.body)
-          res.status(201).json({message: "translated document successfully"})
+          if (contentType.startsWith('application/json')) {
+            const translatedDoc = await downloadDoc.json();
+            console.log('fetched data processed as json', translatedDoc)
+            await unlink(req.file.path) 
+            res.status(201).json({translation: translatedDoc})
+            return clearInterval(statusPing)
+          }
+
+          // console.log("AFTER RETURN - URL LIST: ", downloadDoc)
+          // console.log("AFTER RETURN - DEEPL RESPONSE BODY: ", downloadDoc.body) // this is always a readable stream
+
+          res.set('Content-Type', contentType)
+          res.status(201).send(downloadDoc.body)
           await unlink(req.file.path)  
           return clearInterval(statusPing)
-    
-          // if (contentType.startsWith('application/json')) {
-          //   const translatedDoc = await downloadDoc.json();
-          //   console.log(translatedDoc)
-          //   return res.status(201).json(translatedDoc)
-          // }
     
           throw new Error('Content type is ' + contentType + ', need to setup another conditional')
         }
