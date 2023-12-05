@@ -10,13 +10,13 @@ import lawRouter from './routes/lawRouter.js';
 import authRouter from "./routes/authRoute.js";
 import forumRouter from "./routes/forumRoute.js";
 import translateRouter from './routes/translateRouter.js';
-
+import oldRoute from "./routes/oldRoute.js";
 
 const server = express();
 
 server.use(json());
 
-server.use(cors({ origin: "*" }));
+server.use(cors({exposedHeaders: "authorization"}));
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,6 +30,7 @@ server.use('/article', articleRouter);
 server.use('/law', lawRouter);
 server.use('/auth', authRouter)
 server.use('/forum', forumRouter)
+server.use('/old', oldRoute);
 
 server.use(errHandler)
 

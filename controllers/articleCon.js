@@ -4,7 +4,7 @@ import CategoryCollection from '../models/categorySchema.js'
 
 const allArticle = async (req, res, next) => {
     try {
-        const dbArticle = await CategoryCollection.find();
+        const dbArticle = await CategoryCollection.find().populate('article');
         return res.json(dbArticle);
     } catch (error){
         next (error);
@@ -15,14 +15,14 @@ const oneArticle = async (req, res, next) => {
     try {
         const { id } = req.params;
         if (!id.match(/^[a-f\d]{24}$/i)) throw new ErrorStatus('Can not find Id', 400);
-        const findArticle = await CategoryCollection.findById(id);
+        const findArticle = await CategoryCollection.findById(id).populate('article');
         return res.json(findArticle)
     } catch (error) {
         next(error);
     }
 };
 
-const createArticle = async (req, res, next) => {
+const reateArticle = async (req, res, next) => {
     try {
         req.body.forEach( async ( { headline, paragraph } ) => {
             const newArticle = await ArticleCollection.create({
@@ -35,6 +35,23 @@ const createArticle = async (req, res, next) => {
         next(error)
     }
 }
+const createArticle = async (req, res, next) => {
+    try {
+        const { headline, paragraph } = req.body;
+        if (!headline || !paragraph) {
+            return res.status(400).json({ error: 'Headline and paragraph are required.' });
+        }
+
+        const newArticle = await ArticleCollection.create({
+            headline,
+            paragraph
+        });
+
+        return res.json('Article created');
+    } catch (error) {
+        next(error);
+    }
+};
 
 const createCategory = async (req, res, next) => {
     try {
