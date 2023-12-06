@@ -7,7 +7,7 @@ const articleSchema = new Schema({
         maxlength: 255,
       },
       paragraph: {
-         type: String,
+        type: String,
       }
   });
   
