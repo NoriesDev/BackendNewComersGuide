@@ -53,20 +53,29 @@ const createArticle = async (req, res, next) => {
     }
 };
 
-const createCategory = async (req, res, next) => {
+const reateCategory = async (req, res, next) => {
     try {
         req.body.forEach( async ( { title, imgSrc, article, usefulLinks } ) => {
             const category = await CategoryCollection.create({
                 title, imgSrc, article, usefulLinks
             });
         })
+        console.log(req.body);
         return res.json('category created');
     } catch (error) {
         next(error)
     }
 }
 
-
+const createCategory = async (req, res, next) => {
+    try {
+        const { title, imgSrc, article, usefulLinks } = req.body;
+        const category = await CategoryCollection.create({ title, imgSrc, article, usefulLinks });
+        return res.json('category created');
+    } catch (error) {
+        next(error);
+    }
+};
 
 export {
     allArticle,
